@@ -1,0 +1,10 @@
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="main" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutPattern" />
+    	<param name="file" value="/opt/check_log/sus_%s.log" />
+    </appender>
+    <root>
+	    <level value="debug" />
+	    <appender_ref ref="main" />
+    </root>
+</configuration>
