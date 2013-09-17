@@ -1,0 +1,273 @@
+<!-- 
+author :Warren
+http://www.wglong.com
+ -->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Warren-JQM实战Demo-上/下拉刷新</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/frame/jquery.mobile-1.3.0.min.css">
+		<link rel="stylesheet" href="./css/frame/ios_inspired/styles.css"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="./css/frame/scrollbar/scrollbar.css"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="./css/global.css">
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/iscroll.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./js/global.js"></script>
+		
+	</head>
+	<body>
+		<div data-role="page" id="contentPage1" data-dom-cache="true">
+			<script type="text/javascript">
+		var myScroll,
+			pullDownEl, pullDownOffset,
+			pullUpEl, pullUpOffset,
+			generatedCount = 0;
+		
+		/**
+		 * 下拉刷新 
+		 * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+		 */
+		function pullDownAction () {
+			setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+					var content = ""
+				for (var i=1;i<3;i++){
+					content = content + "<li>";
+					content = content + "<img src=\"./img/headpic/3.jpg\" onerror=\"errpic(this)\" class=\"listpic\"/>";
+					content = content + "<h3 class=\"listtitle\">Warren<span class=\"timestyle\">03-12 13:13</span></h3>";
+					content = content + "<p>";
+					content = content + "下拉新增内容<br/>"+new Date();
+					content = content + "</p>";
+					content = content + "<img src=\"./img/phone.jpg\"/>";
+					content = content + "</li>";
+				}
+				$("#contentList1").prepend(content).listview('refresh');
+				//alert($("#contentList1").html());
+				
+				myScroll.refresh();		//数据加载完成后，调用界面更新方法   Remember to refresh when contents are loaded (ie: on ajax completion)
+			}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+		}
+		
+		/**
+		 * 上拉刷新
+		 * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+		 */
+		function pullUpAction () {
+			setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+				var content = ""
+				for (var i=1;i<3;i++){
+					content = content + "<li>";
+					content = content + "<img src=\"./img/headpic/7.jpg\" onerror=\"errpic(this)\" class=\"listpic\"/>";
+					content = content + "<h3 class=\"listtitle\">Warren<span class=\"timestyle\">03-12 13:13</span></h3>";
+					content = content + "<p>";
+					content = content + "上拉新增内容"+new Date();
+					content = content + "</p>";
+					content = content + "<img src=\"./img/phone.jpg\"/>";
+					content = content + "</li>";
+				}
+				$("#contentList1").append(content).listview('refresh');
+				
+				myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+			}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+		}	
+		
+		/**
+		 * 初始化iScroll控件
+		 */
+		function loaded2() {
+			if(myScroll!=null){
+				myScroll.destroy();
+			}
+			pullDownEl = document.getElementById('pullDown');
+			pullDownOffset = pullDownEl.offsetHeight;
+			pullUpEl = document.getElementById('pullUp');	
+			pullUpOffset = pullUpEl.offsetHeight;
+			
+			myScroll = new iScroll('wrapperContent1', {
+				scrollbarClass: 'myScrollbar', /* 重要样式 */
+				useTransition: false, /* 此属性不知用意，本人从true改为false */
+				topOffset: pullDownOffset,
+				onRefresh: function () {
+					if (pullDownEl.className.match('loading')) {
+						pullDownEl.className = '';
+						pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+					} else if (pullUpEl.className.match('loading')) {
+						pullUpEl.className = '';
+						pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+					}
+				},
+				onScrollMove: function () {
+					if (this.y > 5 && !pullDownEl.className.match('flip')) {
+						pullDownEl.className = 'flip';
+						pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+						this.minScrollY = 0;
+					} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+						pullDownEl.className = '';
+						pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+						this.minScrollY = -pullDownOffset;
+					} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+						pullUpEl.className = 'flip';
+						pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+						this.maxScrollY = this.maxScrollY;
+					} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+						pullUpEl.className = '';
+						pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+						this.maxScrollY = pullUpOffset;
+					}
+				},
+				onScrollEnd: function () {
+					if (pullDownEl.className.match('flip')) {
+						pullDownEl.className = 'loading';
+						pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';				
+						pullDownAction();	// Execute custom function (ajax call?)
+					} else if (pullUpEl.className.match('flip')) {
+						pullUpEl.className = 'loading';
+						pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';				
+						pullUpAction();	// Execute custom function (ajax call?)
+					}
+				}
+			});
+			
+			setTimeout(function () { document.getElementById('wrapperContent1').style.left = '0'; }, 800);
+		}
+			
+		//初始化绑定iScroll控件 
+		//document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+		//document.addEventListener('DOMContentLoaded', loaded2, false); 
+	
+		$("#contentPage1").live('pageinit', function () {
+				var content = ""
+				for (var i=1;i<10;i++){
+					content = content + "<li>";
+					content = content + "<img src=\"./img/headpic/5.jpg\" onerror=\"errpic(this)\" class=\"listpic\"/>";
+					content = content + "<h3 class=\"listtitle\">Warren<span class=\"timestyle\">03-12 13:13</span></h3>";
+					content = content + "<p>";
+					content = content + "测试内容"+i;
+					content = content + "</p>";
+					content = content + "<img src=\"./img/phone.jpg\"/>";
+					content = content + "</li>";
+				}
+				$("#contentList1").append(content).listview('refresh');
+		});
+		$("#contentPage1").live("pagebeforeshow", function(){
+			setTimeout(loaded2, 200); 
+		});
+		$("#contentPage1").live("pageshow", function(){
+			
+		});
+
+	</script>
+	<style type="text/css" media="all">
+	/**
+	 *
+	 * 下拉样式 Pull down styles
+	 *
+	 */
+	#pullDown, #pullUp {
+		background:#fff;
+		height:50px;
+		line-height:40px;
+		padding:5px 10px;
+		border-bottom:1px solid #ccc;
+		font-weight:bold;
+		font-size:14px;
+		color:#888;
+	}
+	#pullUp {
+		padding:15px 10px 0px 0px;
+	}
+	#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
+		display:block; float:left;
+		width:40px; height:40px;
+		background:url(./css/frame/scrollbar/pull-icon@2x.png) 0 0 no-repeat;
+		-webkit-background-size:40px 80px; background-size:40px 80px;
+		-webkit-transition-property:-webkit-transform;
+		-webkit-transition-duration:250ms;	
+	}
+	#pullDown .pullDownIcon {
+		-webkit-transform:rotate(0deg) translateZ(0);
+	}
+	#pullUp .pullUpIcon  {
+		-webkit-transform:rotate(-180deg) translateZ(0);
+	}
+	
+	#pullDown.flip .pullDownIcon {
+		-webkit-transform:rotate(-180deg) translateZ(0);
+	}
+	
+	#pullUp.flip .pullUpIcon {
+		-webkit-transform:rotate(0deg) translateZ(0);
+	}
+	
+	#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+		background-position:0 100%;
+		-webkit-transform:rotate(0deg) translateZ(0);
+		-webkit-transition-duration:0ms;
+	
+		-webkit-animation-name:loading;
+		-webkit-animation-duration:2s;
+		-webkit-animation-iteration-count:infinite;
+		-webkit-animation-timing-function:linear;
+	}
+	
+	@-webkit-keyframes loading {
+		from { -webkit-transform:rotate(0deg) translateZ(0); }
+		to { -webkit-transform:rotate(360deg) translateZ(0); }
+	}
+	</style>
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<h1>
+					上拉/下拉更新
+				</h1>
+			</div>
+			<div data-role="content" data-theme="d">
+				<div id="wrapperContent1" class="wrapper">
+					<div id="scrollerContent1" class="scroller">
+					<div id="pullDown">
+						<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+					</div>
+		
+						<ul data-role="listview" id="contentList1" class="contentList">
+							
+						</ul>
+					<div id="pullUp">
+						<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+					</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer" class="nav-style" data-role="footer" data-theme="a"
+				data-position="fixed">
+				<div data-role="navbar" data-grid="c" class="nav-style">
+					<ul>
+						<li>
+							<a href="#" id="skull" data-icon="custom"  onclick="goTo('content.html')">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="chat" data-icon="custom" onclick="goTo('comp.html')">&nbsp;</a>
+						</li>
+						<li  class="ui-btn-active">
+							<a href="#" id="email" data-icon="custom" >&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="beer" data-icon="custom" onclick="goTo('content2.html')">&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+		</div>
+		
+		
+	</body>
+</html>

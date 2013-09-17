@@ -1,0 +1,47 @@
+﻿
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>详细信息</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		
+	</head>
+
+	<body>
+		<div data-role="page" id="detailsPage"  data-theme="d">
+			<script type="text/javascript">
+			    $("#aboutPage").live('pageinit', function (data) {
+
+
+				});
+				$("#aboutPage").live('pageshow', function() {
+				});
+			</script>
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<a href="#" onclick="goTo('content.html')"
+					data-role="button" data-inline="true" data-icon="back">返回</a> 
+				<h1>
+					详细信息
+				</h1>
+			</div>
+			<div data-role="content"  data-theme="d">
+				<div class="detailsContent">
+					<div class="contentHead">
+						 <img id="headpic" src="./img/phone.jpg" onerror="errpic(this)" class="head"/>
+						 <div id="nameDiv" class="name">Warren</div> 
+						 <div id="timeDiv" class="time">03-12 13:121</div>
+					</div>
+					<div id="contentDiv" class="contentSyle">
+						信息内容</div>
+					<div id="picDiv" class="contentPic"></div>
+					
+				</div>
+				
+				
+			</div>
+		</div>
+	</body>
+
+</html>

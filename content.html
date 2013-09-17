@@ -1,0 +1,152 @@
+<!-- 
+author :Warren
+http://www.wglong.com
+ -->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Warren-JQM实战Demo-主页</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/frame/jquery.mobile-1.3.0.min.css">
+		<link rel="stylesheet" href="./css/frame/ios_inspired/styles.css"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="./css/global.css">
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/iscroll.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./js/global.js"></script>
+
+	</head>
+	<body>
+		<div data-role="page" id="indexPage" data-iscroll="enable"
+			data-dom-cache="true">
+			<script type="text/javascript">
+		var myScroll;
+		function loaded() {
+			if(myScroll!=null){
+				myScroll.destroy();
+			}
+			myScroll = new iScroll("wrapperIndex",{checkDOMChange:false});
+		}
+		$("#indexPage").live('pageinit', function () {
+				var content = ""
+				for (var i=1;i<10;i++){
+					content = content + "<li>";
+					content = content + "<a href=\"#\" onclick=\"goTo('details.html?pic=./img/headpic/5.jpg&name=Warren&time=03-12 13:13&content=测试内容"+i+"&pic=./img/phone.jpg')\">";
+					content = content + "<img src=\"./img/headpic/5.jpg\" onerror=\"errpic(this)\" class=\"listpic\"/>";
+					content = content + "<h3 class=\"listtitle\">Warren<span class=\"timestyle\">03-12 13:13</span></h3>";
+					content = content + "<p>";
+					content = content + "测试内容"+i;
+					content = content + "</p>";
+					content = content + "<img src=\"./img/phone.jpg\"/>";
+					content = content + "</a>";
+					content = content + "</li>";
+				}
+				$("#contentList").append(content).listview('refresh');
+		});
+		$("#indexPage").live("pagebeforeshow", function(){
+			setTimeout(loaded, 200); 
+		});
+		$("#indexPage").live("pageshow", function(){
+			
+		});
+
+	$(document).delegate("#indexPage", "pageinit", function() {
+		$(document).bind("pagebeforechange", beforechange);
+
+	});
+
+	function beforechange(e, data) {
+		if (typeof data.toPage != "string") {
+			var url = $.mobile.path.parseUrl(e.target.baseURI)
+			var re = 'details.html';
+			if (url.href.search(re) != -1) {
+				var page = $(e.target).find("#detailsPage");
+				var d = data.options.data;
+				var data = getUrlParam(url.href);
+				 page.find("#headpic").each(function(i){
+				   this.src = decodeURIComponent(data[0]);
+				 });
+				page.find("#nameDiv").html(decodeURIComponent(data[1]));
+				page.find("#timeDiv").html(decodeURIComponent(data[2]));
+				page.find("#contentDiv").html(decodeURIComponent(data[3]));
+				var picSrc = decodeURIComponent(data[4]);
+				if(picSrc!=''){
+					page.find("#picDiv").html("<img src="+picSrc+" onerror='errpic(this)'/>");
+				}
+				
+			}
+		}
+	}
+	
+	</script>
+			<div data-role="header" data-position="fixed" data-theme="b">
+			<a href="index.html"
+					data-role="button" data-inline="true" data-icon="back">注销</a> 
+				<h1>
+					主页
+				</h1>
+			</div>
+			<div data-role="content" data-theme="d">
+				<div id="wrapperIndex" class="wrapper">
+					<div id="scrollerIndex" class="scroller">
+						<ul data-role="listview" id="contentList" class="contentList">
+							<li>
+								<a href="#" onclick="goTo('details.html?headpic=./img/headpic/9.jpg&name=丹丹&time=03-12 13:12&content=人人为我，我为人人&pic=./img/phone.jpg')">
+								<img src="./img/headpic/9.jpg" onerror="errpic(this)" class="listpic" />
+								<h3 class="listtitle">
+									丹丹
+									<span class="timestyle">03-12 13:12</span>
+								</h3>
+								<p class="contentText">
+									人人为我，我为人人
+								</p>
+								<img alt="" src="./img/phone.jpg" /></a>
+							</li>
+							<li>
+								<a href="#" onclick="goTo('details.html?headpic=./img/headpic/1.jpg&name=小欣&time=03-12 13:12&content=希望大家多多支持！！！&pic=')">
+								<img src="./img/headpic/1.jpg" onerror="errpic(this)" class="listpic" />
+								<h3 class="listtitle">
+									小欣
+									<span class="timestyle">03-12 13:12</span>
+								</h3>
+								<p class="contentText">
+									希望大家多多支持！！！
+								</p></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer" class="nav-style" data-role="footer" data-theme="a"
+				data-position="fixed">
+				<div data-role="navbar" data-grid="c" class="nav-style">
+					<ul>
+						<li  class="ui-btn-active">
+							<a href="#" id="skull" data-icon="custom">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="chat" data-icon="custom"  onclick="goTo('comp.html')">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="email" data-icon="custom"  onclick="goTo('content1.html')">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="beer" data-icon="custom" onclick="goTo('content2.html')">&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+		</div>
+		
+		
+	</body>
+</html>

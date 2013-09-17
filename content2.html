@@ -1,0 +1,97 @@
+<!-- 
+author :Warren
+http://www.wglong.com
+ -->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Warren-JQM实战Demo-内容页2</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/frame/jquery.mobile-1.3.0.min.css">
+		<link rel="stylesheet" href="./css/frame/ios_inspired/styles.css"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="./css/global.css">
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/iscroll.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="./js/frame/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./js/global.js"></script>
+
+	</head>
+	<body>
+		<div data-role="page" id="contentPage2" data-dom-cache="true">
+			<script type="text/javascript">
+		var myScroll;
+		function loaded3() {
+			if(myScroll!=null){
+				myScroll.destroy();
+			}
+			myScroll = new iScroll("wrapperContent2",{checkDOMChange:false});
+		}
+		$("#contentPage2").live('pageinit', function () {
+				var content = ""
+				for (var i=1;i<11;i++){
+					content = content + "<li>";
+					content = content + "<img src=\"./img/headpic/"+i+".jpg\" onerror=\"errpic(this)\" class=\"listpic\"/>";
+					content = content + "<h3 class=\"listtitle\">Warren<span class=\"timestyle\">03-12 13:13</span></h3>";
+					content = content + "<p>";
+					content = content + "测试内容"+i;
+					content = content + "</p>";
+					content = content + "<img src=\"./img/phone.jpg\"/>";
+					content = content + "</li>";
+				}
+				$("#contentList2").append(content).listview('refresh');
+		});
+		$("#contentPage2").live("pagebeforeshow", function(){
+			setTimeout(loaded3, 200); 
+		});
+		$("#contentPage2").live("pageshow", function(){
+			
+		});
+
+	</script>
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<h1>
+					内容页2
+				</h1>
+			</div>
+			<div data-role="content" data-theme="d">
+				<div id="wrapperContent2" class="wrapper">
+					<div id="scrollerContent2" class="scroller">
+						<ul data-role="listview" id="contentList2" class="contentList">
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div id="footer" class="nav-style" data-role="footer" data-theme="a"
+				data-position="fixed">
+				<div data-role="navbar" data-grid="c" class="nav-style">
+					<ul>
+						<li>
+							<a href="#" id="skull" data-icon="custom"  onclick="goTo('content.html')">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="chat" data-icon="custom" onclick="goTo('comp.html')">&nbsp;</a>
+						</li>
+						<li>
+							<a href="#" id="email" data-icon="custom" onclick="goTo('content1.html')">&nbsp;</a>
+						</li>
+						<li  class="ui-btn-active">
+							<a href="#" id="beer" data-icon="custom">&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+		</div>
+		
+		
+	</body>
+</html>
