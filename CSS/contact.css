@@ -1,0 +1,24 @@
+/**
+* @author Liyang  345218387@qq.com
+* 转载请保留作者信息
+*/
+
+
+
+li a span{
+   font-size: 25px;
+}
+li a {
+  height: 50px;
+  text-align: center;
+}
+
+.header {
+    height: 80px;
+    font-size: 40px;
+}
+.headertext {
+    font-size: 30px;
+    text-align: center;
+    color: #00ff00;
+}

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+    <div data-role="page" id="sendfaxPage">
+        <div id="sendfaxHeader" data-theme="b" data-role="header">
+            <a id="btn_Menus" data-role="button" data-theme="b" href="#menus"
+               data-rel="popup" data-icon="bars" data-iconpos="notext" class="ui-btn-left"></a>
+            <h1>传真发送
+            </h1>
+        </div>
+        <div id="sendfaxContent" data-role="content">
+            <div data-role="fieldcontain">
+                <label for="txtFaxNo">
+                    传真号码：
+                </label>
+                <input name="txtFaxNo" id="txtFaxNo" placeholder="请输入传真号码,多个号码以;号分隔" value="" type="tel">
+            </div>
+            <div data-role="fieldcontain">
+                <label for="txtSub">
+                    主    题：
+                </label>
+                <input name="txtSub" id="txtSub" placeholder="请输入主题" value="" type="text">
+            </div>
+            <div data-role="fieldcontain">
+                <textarea name="" id="txtContent" placeholder="传真内容"></textarea>
+            </div>
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="javascript:sendfax()" id="btn_Send" data-role="button" data-inline="true">发送</a>
+                <a href="home.html" data-role="button" data-inline="true">取消</a>
+            </div>
+        </div>
+        <div data-role="popup" id="menus" data-theme="a">
+            <ul data-role="listview" data-theme="c" data-inset="true">
+               <li><a href="home.html" data-transition="slide">主页</a></li>
+                <li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>
+                <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>
+               <!-- <li><a href="#delfaxlist" data-transition="slide">垃圾箱</a></li>-->
+            </ul>
+        </div>
+        <!--  <div data-role="panel" id="menus" data-position="left" data-display="overlay" data-theme="b">-->
+        <!--<p>
+                <a href="#links" data-rel="close" data-role="button" data-theme="b" data-icon="delete" data-iconpos="notext" data-inline="true"></a>
+            </p>-->
+        <!-- <ul data-role="listview">
+                <li><a href="home.html" data-transition="slide">主页</a></li>
+                <li><a href="faxlist.html" data-transition="slide">收件箱</a></li>
+                <li><a href="faxlist.html" data-transition="slide">已发送</a></li>
+                <li><a href="faxlist.html" data-transition="slide">垃圾箱</a></li>
+            </ul>
+        </div>-->
+    </div>
+
+</body>
+</html>

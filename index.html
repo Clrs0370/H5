@@ -1,60 +1,141 @@
-<!DOCTYPE HTML>
-<!--
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
--->
+﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=320; user-scalable=no" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>PhoneGap</title>
-      <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="no title">
-      <script type="text/javascript" charset="utf-8" src="cordova-1.8.0.js"></script>
-      <script type="text/javascript" charset="utf-8" src="main.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>网络传真V1.1</title>
+    <link href="CSS/Jquerymobile/jquery.mobile-1.3.0.min.css" rel="stylesheet" />
+    <link href="CSS/global.css" rel="stylesheet" />
+    <link href="CSS/scrollbar/scrollbar.css" rel="stylesheet" />
+    <link href="CSS/jquery-mobile.css" rel="stylesheet" />
+    <link href="CSS/photoswipe.css" rel="stylesheet" />
 
-  </head>
-  <body onload="init();" id="stage" class="theme">
-    <h1>Welcome to Cordova!</h1>
-    <h2>this file is located at assets/www/index.html</h2>
-    <div id="info">
-        <h4>Platform: <span id="platform"> &nbsp;</span>,   Version: <span id="version">&nbsp;</span></h4>
-        <h4>UUID: <span id="uuid"> &nbsp;</span>,   Name: <span id="name">&nbsp;</span></h4>
-        <h4>Width: <span id="width"> &nbsp;</span>,   Height: <span id="height">&nbsp;
-                   </span>, Color Depth: <span id="colorDepth"></span></h4>
-     </div>
-    <dl id="accel-data">
-      <dt>X:</dt><dd id="x">&nbsp;</dd>
-      <dt>Y:</dt><dd id="y">&nbsp;</dd>
-      <dt>Z:</dt><dd id="z">&nbsp;</dd>
-    </dl>
-    <a href="#" class="btn large" onclick="toggleAccel();">Toggle Accelerometer</a>
-    <a href="#" class="btn large" onclick="getLocation();">Get Location</a>
-    <a href="tel:411" class="btn large">Call 411</a>
-    <a href="#" class="btn large" onclick="beep();">Beep</a>
-    <a href="#" class="btn large" onclick="vibrate();">Vibrate</a>
-    <a href="#" class="btn large" onclick="show_pic();">Get a Picture</a>
-    <a href="#" class="btn large" onclick="get_contacts();return false;">Get Phone's Contacts</a>
-    <a href="#" class="btn large" onclick="check_network();return false;">Check Network</a>
-    <dl>
-    <dt>Compass Heading:</dt><dd id="h">Off</dd>
-    </dl>
-    <a href="#" class="btn large" onclick="toggleCompass();return false;">Toggle Compass</a>
-    <div id="viewport" class="viewport" style="display: none;">
-      <img style="width:60px;height:60px" id="test_img" src="" />
+    <script src="JS/klass.min.js"></script>
+    <script src="JS/Jquery/jquery-1.8.2.min.js"></script>
+
+    <script>
+        $(document).bind("mobileinit", function () {
+
+            $.mobile.allowCrossDomainPages = true;
+            $.support.cors = true;
+            sessionStorage.removeItem("UserInfo");
+
+        });
+    </script>
+
+    <script src="JS/Jquerymobile/jquery.mobile-1.3.0.min.js"></script>
+    <script src="JS/code.photoswipe.jquery-3.0.5.min.js"></script>
+    <script src="JS/global.js"></script>
+    <script src="JS/Common.js"></script>
+    <script src="JS/cordova.js"></script>
+    <script src="JS/iscroll.js"></script>
+    
+<!--    <style type="text/css" media="all">
+
+    </style>-->
+</head>
+<body>
+    <div id="index" data-role="page">
+        <div id="indexHeader" data-theme="b" data-role="header">
+            <h1>网络传真
+            </h1>
+
+        </div>
+        <div id="indexContent" data-role="content">
+            <form>
+                <div data-role="fieldcontain">
+                    <label for="txtUserAccount">
+                        账户
+                    </label>
+                    <input name="" id="txtUserAccount" placeholder="请输入账户" data-mini="true" type="email">
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="txtPassWord">
+                        密码
+                    </label>
+                    <input name="" id="txtPassWord" placeholder="请输入密码" data-mini="true" type="password">
+                </div>
+                <input id="submit" data-theme="b" data-icon="arrow-r" data-iconpos="right" value="登录" type="submit" onclick="login();">
+            </form>
+
+        </div>
+
     </div>
-  </body>
+
+    <!-- 发送 -->
+    <div id="sendfaxlist" data-role="page">
+        <div data-role="header" data-theme="b">
+            <a id="btn_Menus" data-role="button" data-theme="b" href="#menus"
+                data-rel="popup" data-icon="bars" data-iconpos="notext" class="ui-btn-left"></a>
+            <h1>已发送列表</h1>
+        </div>
+        <div data-role="content" data-theme="d">
+            <div id="wrapper">
+                <div id="scroller">
+                    <div id="pullDown">
+                        <span class="pullDownIcon"></span>
+                        <span class="pullDownLabel">下拉刷新...</span>
+                    </div>
+
+                    <ul id="thelist" data-role="listview" >
+                    </ul>
+
+                    <div id="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-theme="b">
+        </div>
+
+        <div data-role="popup" id="menus" data-theme="b">
+            <ul data-role="listview" data-theme="c" data-inset="true">
+                <li><a href="javascript:GoTo('home.html')" data-transition="slide">主页</a></li>
+                <li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>
+                <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>
+                <!--<li><a href="#delfaxlist" data-transition="slide">垃圾箱</a></li>-->
+            </ul>
+        </div>
+    </div>
+
+    <!-- 接收 -->
+    <div id="recvfaxlist" data-role="page">
+        <div data-role="header" data-theme="b">
+            <a id="A1" data-role="button" data-theme="b" href="#rmenus"
+                data-rel="popup" data-icon="bars" data-iconpos="notext" class="ui-btn-left"></a>
+            <h1>接收列表</h1>
+        </div>
+        <div data-role="content" data-theme="d" id="recvContent">
+             <div id="recvWrapper">
+                <div id="recvScroller">
+                    <div id="recvPullDown" >
+                        <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                    </div>
+
+                    <ul id="recvList" data-role="listview" >
+                    </ul>
+
+                    <div id="recvPullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-theme="b">
+        </div>
+        <div data-role="popup" id="rmenus" data-theme="b">
+            <ul data-role="listview" data-theme="c" data-inset="true">
+                <li><a href="javascript:GoTo('home.html')" data-transition="slide">主页</a></li>
+                <li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>
+                <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>
+                <!--<li><a href="#delfaxlist" data-transition="slide">垃圾箱</a></li>-->
+            </ul>
+        </div>
+    </div>
+</body>
 </html>
