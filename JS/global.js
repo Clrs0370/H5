@@ -36,10 +36,13 @@ function hide(data)
 }
 //跳转
 function GoTo(page) {
-    ShowLoading();
+
+    //ShowLoading();
+
 	$.mobile.changePage(page, {
 		  transition: "slide"
-		});
+	});
+
 }
 
 //后退

@@ -8,7 +8,7 @@
     <title>网络传真V1.1</title>
     <link href="CSS/Jquerymobile/jquery.mobile-1.3.0.min.css" rel="stylesheet" />
     <link href="CSS/global.css" rel="stylesheet" />
-    <link href="CSS/scrollbar/scrollbar.css" rel="stylesheet" />
+    <!--<link href="CSS/scrollbar/scrollbar.css" rel="stylesheet" />-->
     <link href="CSS/jquery-mobile.css" rel="stylesheet" />
     <link href="CSS/photoswipe.css" rel="stylesheet" />
 
@@ -23,6 +23,7 @@
             sessionStorage.removeItem("UserInfo");
 
         });
+
     </script>
 
     <script src="JS/Jquerymobile/jquery.mobile-1.3.0.min.js"></script>
@@ -30,10 +31,143 @@
     <script src="JS/global.js"></script>
     <script src="JS/Common.js"></script>
     <script src="JS/cordova.js"></script>
-    <script src="JS/iscroll.js"></script>
-    
-<!--    <style type="text/css" media="all">
+    <!--<script src="JS/iscroll.js"></script>-->
 
+   <!-- <style type="text/css" media="all">
+        body, ul, li {
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+
+        body {
+            font-size: 12px;
+            -webkit-user-select: none;
+            -webkit-text-size-adjust: none;
+            font-family: helvetica;
+        }
+
+        #wrapper, #recvWrapper {
+            position: absolute;
+            z-index: 1;
+            top: 45px;
+            bottom: 48px;
+            left: 0;
+            width: 100%;
+            background: #555;
+            overflow: auto;
+        }
+
+        #scroller, #recvScroller {
+            position: relative;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            float: left;
+            width: 100%;
+            padding: 0;
+        }
+
+        .listtitle {
+            color: #006699;
+            margin-top: 1px;
+            font-size: 11pt;
+            font-weight: bold;
+        }
+
+        .timestyle {
+            color: grey;
+            margin-top: 1px;
+            font-size: 10pt;
+            float: right;
+            margin-right: 5px;
+        }
+
+        #scroller ul, #recvScroller ul {
+            position: relative;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        #scroller li, #recvScroller li {
+            padding: 0 10px;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #fff;
+            background-color: #fafafa;
+            font-size: 14px;
+        }
+
+            #scroller li > a, #recvScroller li > a {
+                display: block;
+            }
+
+        /**
+ *
+ * 下拉样式 Pull down styles
+ *
+ */
+        #pullDown, #recvPullDown, #pullUp, #recvPullUp {
+            background: #fff;
+            height: 40px;
+            line-height: 40px;
+            padding: 5px 10px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            font-size: 14px;
+            color: #888;
+        }
+
+            #pullDown .pullDownIcon, #pullUp .pullUpIcon, #recvPullDown .pullDownIcon, #recvPullUp .pullUpIcon {
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                background: url(CSS/scrollbar/pull-icon@2x.png) 0 0 no-repeat;
+                -webkit-background-size: 40px 80px;
+                background-size: 40px 80px;
+                -webkit-transition-property: -webkit-transform;
+                -webkit-transition-duration: 250ms;
+            }
+
+            #pullDown .pullDownIcon, #recvPullDown .pullDownIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullUp .pullUpIcon, #recvPullUp .pullUpIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullDown.flip .pullDownIcon, #recvPullDown.flip .pullDownIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullUp.flip .pullUpIcon, #recvPullUp.flip .pullUpIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon, #recvPullDown.loading .pullDownIcon, #recvPullUp.loading .pullUpIcon {
+                background-position: 0 100%;
+                -webkit-transform: rotate(0deg) translateZ(0);
+                -webkit-transition-duration: 0ms;
+                -webkit-animation-name: loading;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: infinite;
+                -webkit-animation-timing-function: linear;
+            }
+
+        @-webkit-keyframes loading {
+            from {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg) translateZ(0);
+            }
+        }
     </style>-->
 </head>
 <body>
@@ -70,24 +204,25 @@
             <a id="btn_Menus" data-role="button" data-theme="b" href="#menus"
                 data-rel="popup" data-icon="bars" data-iconpos="notext" class="ui-btn-left"></a>
             <h1>已发送列表</h1>
+            <a id="btn_SendRef" data-role="button" data-theme="b" href="#" data-icon="refresh" data-iconpos="notext" class="ui-btn-right"></a>
         </div>
         <div data-role="content" data-theme="d">
-            <div id="wrapper">
+         <!--   <div id="wrapper">
                 <div id="scroller">
                     <div id="pullDown">
                         <span class="pullDownIcon"></span>
                         <span class="pullDownLabel">下拉刷新...</span>
-                    </div>
+                    </div>-->
 
-                    <ul id="thelist" data-role="listview" >
+                    <ul id="thelist" data-role="listview">
                     </ul>
 
-                    <div id="pullUp">
+                  <!--  <div id="pullUp">
                         <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
                     </div>
 
                 </div>
-            </div>
+            </div>-->
         </div>
         <div data-role="footer" data-theme="b">
         </div>
@@ -96,8 +231,8 @@
             <ul data-role="listview" data-theme="c" data-inset="true">
                 <li><a href="javascript:GoTo('home.html')" data-transition="slide">主页</a></li>
                 <li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>
-                <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>
-                <!--<li><a href="#delfaxlist" data-transition="slide">垃圾箱</a></li>-->
+                <!-- <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>-->
+                <li><a href="javascript:GoTo('sendfax.html')" data-transition="slide">发传真</a></li>
             </ul>
         </div>
     </div>
@@ -108,34 +243,36 @@
             <a id="A1" data-role="button" data-theme="b" href="#rmenus"
                 data-rel="popup" data-icon="bars" data-iconpos="notext" class="ui-btn-left"></a>
             <h1>接收列表</h1>
+            <a id="btn_RecvRef" data-role="button" data-theme="b" href="#" data-icon="refresh" data-iconpos="notext" class="ui-btn-right"></a>
         </div>
         <div data-role="content" data-theme="d" id="recvContent">
-             <div id="recvWrapper">
+           <!-- <div id="recvWrapper">
                 <div id="recvScroller">
-                    <div id="recvPullDown" >
+                    <div id="recvPullDown">
                         <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
-                    </div>
+                    </div>-->
 
-                    <ul id="recvList" data-role="listview" >
+                    <ul id="recvList" data-role="listview">
                     </ul>
 
-                    <div id="recvPullUp">
+                <!--    <div id="recvPullUp">
                         <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
                     </div>
 
                 </div>
             </div>
-        </div>
+        </div>-->
         <div data-role="footer" data-theme="b">
         </div>
         <div data-role="popup" id="rmenus" data-theme="b">
             <ul data-role="listview" data-theme="c" data-inset="true">
                 <li><a href="javascript:GoTo('home.html')" data-transition="slide">主页</a></li>
-                <li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>
+                <!--<li><a href="#recvfaxlist" data-transition="slide">收件箱</a></li>-->
                 <li><a href="#sendfaxlist" data-transition="slide">已发送</a></li>
-                <!--<li><a href="#delfaxlist" data-transition="slide">垃圾箱</a></li>-->
+                <li><a href="javascript:GoTo('sendfax.html')" data-transition="slide">发传真</a></li>
             </ul>
         </div>
+
     </div>
 </body>
 </html>
